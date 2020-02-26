@@ -1,0 +1,249 @@
+{
+	"info": {
+		"_postman_id": "1f5bd238-9b88-472e-afd7-711cb122b938",
+		"name": "oauth",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "消息類別",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/oauth2/newsKind/all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"oauth2",
+						"newsKind",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "取token",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "secret",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "client_id",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "a1018345@gmail.com",
+							"description": "admin",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "abc12345",
+							"description": "password",
+							"type": "text"
+						},
+						{
+							"key": "",
+							"value": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/oauth2/oauth/token",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"oauth2",
+						"oauth",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "所有新聞",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NjczMjM2OTQsInVzZXJfbmFtZSI6ImExMDE4MzQ1QGdtYWlsLmNvbSIsImF1dGhvcml0aWVzIjpbIkFETUlOIl0sImp0aSI6ImEwN2IyODU5LTlhNDItNDVkZC04OTQzLWU1YmRmZjQ5MWY4MiIsImNsaWVudF9pZCI6ImNsaWVudF9pZCIsInNjb3BlIjpbInJlYWQiLCJ3cml0ZSIsInRydXN0Il19.C6xnh6gR01w-DVx1IDhFYbrmzaCGdgLECDM3-arzzzw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/oauth2/news/all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"oauth2",
+						"news",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "確認token",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "secret",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "client_id",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/oauth2/oauth/check_token?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJhZG1pbjJfMiIsInNjb3BlIjpbInJlYWQiLCJ3cml0ZSIsInRydXN0Il0sIm9yZ2FuaXphdGlvbiI6ImFkbWluMl8yRHR1diIsImV4cCI6MTU2NjcyNTA2MSwiYXV0aG9yaXRpZXMiOlsiQURNSU4iXSwianRpIjoiNTUwYTMyYzYtZmEyZi00NjBhLWE1OTEtNTUyYTg5ZWE4OWQyIiwiY2xpZW50X2lkIjoiY2xpZW50X2lkIn0.Khy5F9zWp3erMlcoD4KxlwAmHZdr2iVV3lMcbqhPPlo",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"oauth2",
+						"oauth",
+						"check_token"
+					],
+					"query": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJhZG1pbjJfMiIsInNjb3BlIjpbInJlYWQiLCJ3cml0ZSIsInRydXN0Il0sIm9yZ2FuaXphdGlvbiI6ImFkbWluMl8yRHR1diIsImV4cCI6MTU2NjcyNTA2MSwiYXV0aG9yaXRpZXMiOlsiQURNSU4iXSwianRpIjoiNTUwYTMyYzYtZmEyZi00NjBhLWE1OTEtNTUyYTg5ZWE4OWQyIiwiY2xpZW50X2lkIjoiY2xpZW50X2lkIn0.Khy5F9zWp3erMlcoD4KxlwAmHZdr2iVV3lMcbqhPPlo"
+						}
+					]
+				},
+				"description": "實際上如果使用JWT，resource server並不需要跟authorization server確認token內容"
+			},
+			"response": []
+		},
+		{
+			"name": "refresh_token",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "secret",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "client_id",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "refresh_token",
+							"type": "text"
+						},
+						{
+							"key": "refresh_token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJhZG1pbjJfMiIsInNjb3BlIjpbInJlYWQiLCJ3cml0ZSIsInRydXN0Il0sImF0aSI6IjA4M2UwYTg5LWMyMTUtNDc5My1iZWEyLTUwNzRmNTJiMDAzNyIsInVzZXJTZXNzaW9uIjp7ImlkIjoxLCJlbWFpbCI6ImExMDE4MzQ1QGdtYWlsLmNvbSIsIm5hbWUiOiJhZG1pbjJfMiIsInBhc3N3b3JkIjoiIiwic3RhdHVzIjoiMSIsInV1aWQiOiJHWTREUU5MRkdVNERFTkRCRzVTRENNTEZIRTRER04zREdBWURBWVpTSEUyVEtPQlpNTTJBPT09PSIsImF1dGhvcml0aWVzIjpbeyJhdXRob3JpdHkiOiJBRE1JTiJ9XSwicGFzc3dvcmRFcnJvckNvdW50IjowLCJlbmFibGUiOnRydWUsImxvY2siOnRydWUsImVuYWJsZWQiOnRydWUsInVzZXJuYW1lIjoiYWRtaW4yXzIiLCJhY2NvdW50Tm9uRXhwaXJlZCI6dHJ1ZSwiY3JlZGVudGlhbHNOb25FeHBpcmVkIjp0cnVlLCJhY2NvdW50Tm9uTG9ja2VkIjp0cnVlfSwiZXhwIjoxNTY5NDIxMzMzLCJhdXRob3JpdGllcyI6WyJBRE1JTiJdLCJqdGkiOiIwYmU3MzdhMS05ZWIwLTRmNjMtOTlhMC01NjFiOGZhZjcwNjciLCJjbGllbnRfaWQiOiJjbGllbnRfaWQifQ.3n3hcUTXktFrrnBQrTVOkHxOLtZrfwlFBpywdi_3J0M",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/oauth2/oauth/token",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"oauth2",
+						"oauth",
+						"token"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
