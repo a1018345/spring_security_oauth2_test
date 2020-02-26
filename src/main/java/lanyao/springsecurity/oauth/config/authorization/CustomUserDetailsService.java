@@ -51,6 +51,10 @@ public class CustomUserDetailsService implements UserDetailsService {
             roleBuffer.append(i == 0 ? byUserId.get(i).getName() : ","+byUserId.get(i).getName());
         }
 
+        System.out.println("roleBuffer:"+roleBuffer.toString());
+
+
+
         List<GrantedAuthority> grantedAuthorities = AuthorityUtils.commaSeparatedStringToAuthorityList(roleBuffer.toString());
         UserSession userSession = new UserSession();
         userSession.setAuthorities(grantedAuthorities);

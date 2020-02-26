@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,13 +21,15 @@ public class NewsController {
     NewsService newsService;
 
 
-
+//    @CrossOrigin
     @GetMapping(value = "all",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public List<News> findAll(
             OAuth2Authentication auth
     ){
         System.out.println("herere");
         List<News> news = new ArrayList<>();
+
+        news.add(new News(1,"titleTest","content~~~~","3", LocalDateTime.now(),null));
 
 
         System.out.println("authauth:"+auth);

@@ -47,7 +47,9 @@ public class OAuth2ResourceServer extends ResourceServerConfigurerAdapter {
                 .anyRequest().authenticated()
                 .mvcMatchers("/news/**").access("hasRole('ADMIN')");
 
-        http.headers().frameOptions().sameOrigin();
+//        http.headers().frameOptions().sameOrigin();
+
+//        http.cors().and().authorizeRequests().antMatchers(HttpMethod.OPTIONS, "/oauth/token").permitAll();
 
         super.configure(http);
     }
@@ -69,20 +71,20 @@ public class OAuth2ResourceServer extends ResourceServerConfigurerAdapter {
     @Bean("resourceServerDefaultTokenService")
     public ResourceServerTokenServices  tokenServices(@Autowired @Qualifier("authorizationServerTokenStore") TokenStore tokenStore) {
         DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
+
         defaultTokenServices.setTokenStore(tokenStore);
 
+
+        //    使用傳統token要註解
         defaultTokenServices.setTokenEnhancer(tokenEnhancer);
+
+
         defaultTokenServices.setAccessTokenValiditySeconds(300);
         defaultTokenServices.setRefreshTokenValiditySeconds(60*60*24*30);
 
         return defaultTokenServices;
     }
 
-
-//    @Bean("resourceServerTokenStore")
-//    public TokenStore tokenStore(@Autowired @Qualifier("resourceServerAccessTokenConverter") JwtAccessTokenConverter jwtAccessTokenConverter) {
-//        return new JwtTokenStore(jwtAccessTokenConverter);
-//    }
 
     @Bean("resourceServerAccessTokenConverter")
     public JwtAccessTokenConverter accessTokenConverter() {
@@ -93,9 +95,6 @@ public class OAuth2ResourceServer extends ResourceServerConfigurerAdapter {
         converter.setAccessTokenConverter(customAccessTokenConverter);
         return converter;
     }
-
-
-
 
     @Bean(value = "resourceServerEnhancer")
     public TokenEnhancer tokenEnhancer() {

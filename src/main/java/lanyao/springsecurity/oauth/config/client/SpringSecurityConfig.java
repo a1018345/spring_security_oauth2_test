@@ -31,6 +31,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .mvcMatchers(HttpMethod.GET,"/news/**").permitAll()
                 .mvcMatchers(HttpMethod.GET,"/newsKind/**").permitAll()
                 .mvcMatchers(HttpMethod.POST,"/oauth/token").permitAll()
+//                .mvcMatchers(HttpMethod.OPTIONS,"/oauth/token").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic()
@@ -48,6 +49,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 //        auth.userDetailsService(new CustomUserDetailsService()).passwordEncoder(passwordEncoder);
         super.configure(auth);
     }
+
+
 
 
 

@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -14,6 +15,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
@@ -64,7 +66,6 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         //配置client端
-
         String password = passwordEncoder.encode("secret");
 
         clients
@@ -77,7 +78,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
                 .authorizedGrantTypes("password", "refresh_token")
                 //用戶允許應用程式代表他們做的操作
                 .scopes("read", "write", "trust")
-                .accessTokenValiditySeconds(300)
+                .accessTokenValiditySeconds(1000)
                 .refreshTokenValiditySeconds(60*60*24*30);
 
     }
@@ -85,7 +86,6 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
         security.tokenKeyAccess("permitAll()").checkTokenAccess("isAuthenticated()").passwordEncoder(passwordEncoder);
-
     }
 
 
@@ -95,9 +95,10 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
         TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
         //tokenEnhancer是為了在token增加自定義的屬性
         //JwtAccessTokenConverter說明token如何解析
+
+        //    使用傳統token要註解
         tokenEnhancerChain.setTokenEnhancers(
                 Arrays.asList(tokenEnhancer, jwtAccessTokenConverter));
-
 
 
 
@@ -150,24 +151,37 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
         return converter;
     }
 
-//    @Primary
-//    @Bean("authorizationServerTokenServices")
-//    public DefaultTokenServices tokenServices(
-//            @Autowired @Qualifier("authorizationServerTokenStore") TokenStore tokenStore
-//    ) {
-//        DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
-//
-//        defaultTokenServices.setTokenStore(tokenStore);
-//        defaultTokenServices.setSupportRefreshToken(true);
-//        return defaultTokenServices;
-//    }
+    @Primary
+    @Bean("authorizationServerTokenServices")
+    public DefaultTokenServices tokenServices(
+            @Autowired @Qualifier("authorizationServerTokenStore") TokenStore tokenStore
+    ) {
+        DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
 
+        defaultTokenServices.setTokenStore(tokenStore);
+        defaultTokenServices.setSupportRefreshToken(true);
+        return defaultTokenServices;
+    }
+
+
+//   使用JWT
     @Bean("authorizationServerTokenStore")
     public TokenStore tokenStore(
             @Autowired @Qualifier("authorizationServerAccessTokenConverter") JwtAccessTokenConverter jwtAccessTokenConverter
     ) {
         return new JwtTokenStore(jwtAccessTokenConverter);
     }
+
+
+//    使用傳統token
+//    @Bean("authorizationServerTokenStore")
+//    public TokenStore tokenStore(
+//            @Autowired @Qualifier("authorizationServerAccessTokenConverter") JwtAccessTokenConverter jwtAccessTokenConverter
+//    ) {
+//        return new InMemoryTokenStore();
+//    }
+
+
 
     @Bean(value = "authorizationServerPasswordEncoder")
     public PasswordEncoder passwordEncoder() {
@@ -182,6 +196,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     public CustomWebResponseExceptionTranslator authorizationEntryPoint(){
         return new CustomWebResponseExceptionTranslator();
     }
+
 
 
 
